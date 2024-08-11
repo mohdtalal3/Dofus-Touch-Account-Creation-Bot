@@ -16,12 +16,8 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from fake_useragent import UserAgent
 user_agents = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:90.0) Gecko/20100101 Firefox/90.0",
-    "Mozilla/5.0 (iPhone; CPU iPhone OS 14_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Mobile/15E148 Safari/604.1"
-]
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"]
 def extract_sec_code(email_address, email_password):
     options = webdriver.ChromeOptions()
     random_user_agent = random.choice(user_agents)
@@ -34,24 +30,40 @@ def extract_sec_code(email_address, email_password):
         driver.get('https://login.live.com/login.srf?wa=wsignin1.0&rpsnv=157&ct=1723061878&rver=7.0.6738.0&wp=MBI_SSL&wreply=https%3a%2f%2foutlook.live.com%2fowa%2f%3fnlp%3d1%26cobrandid%3dab0455a0-8d03-46b9-b18b-df2f57b9e44c%26deeplink%3dowa%252f%26RpsCsrfState%3d3ed97c09-c25b-ed4a-006c-e6ebeb4b3f89&id=292841&aadredir=1&CBCXT=out&lw=1&fl=dob%2cflname%2cwld&cobrandid=ab0455a0-8d03-46b9-b18b-df2f57b9e44c')
         wait = WebDriverWait(driver, 60)
 
-        time.sleep(5)
+        time.sleep(random.uniform(5, 7))
         email_input = wait.until(EC.presence_of_element_located((By.NAME, 'loginfmt')))
         email_input.clear()
-        email_input.send_keys(email_address)
+        time.sleep(random.uniform(1, 2))
+        
+        for char in email_address:
+            email_input.send_keys(char)
+            time.sleep(random.uniform(0.1, 0.3))
+        time.sleep(random.uniform(1, 2))
+        
         driver.find_element(By.ID, 'idSIButton9').click()
+        time.sleep(random.uniform(3, 5))
 
         password_input = wait.until(EC.presence_of_element_located((By.NAME, 'passwd')))
-        password_input.send_keys(email_password)
+        time.sleep(random.uniform(1, 2))
+        
+        for char in email_password:
+            password_input.send_keys(char)
+            time.sleep(random.uniform(0.1, 0.3))
+        time.sleep(random.uniform(1, 2))
+        
         driver.find_element(By.ID, 'idSIButton9').click()
+        time.sleep(random.uniform(3, 5))
 
         try:
             yes_button = wait.until(EC.element_to_be_clickable((By.ID, 'acceptButton')))
+            time.sleep(random.uniform(1, 2))
             yes_button.click()
-            time.sleep(2)
+            time.sleep(random.uniform(2, 4))
         except TimeoutException:
             print("Stay signed in page did not appear.")
 
         print("Logged in successfully!")
+        time.sleep(random.uniform(3, 5))
 
         try:
             div_element = WebDriverWait(driver, 90).until(EC.presence_of_element_located(
@@ -61,6 +73,7 @@ def extract_sec_code(email_address, email_password):
             print("Ankama security code email not found.")
             return False
 
+        time.sleep(random.uniform(1, 2))
         aria_label_text = div_element.get_attribute('aria-label')
         print("Aria-label text:", aria_label_text)
 
@@ -77,8 +90,8 @@ def extract_sec_code(email_address, email_password):
     except Exception as e:
         print(e)
     finally:
+        time.sleep(random.uniform(2, 4))
         driver.quit()
-
 def scroll_to_end(driver):
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(2)
@@ -113,13 +126,15 @@ def login_to_dofus(email_address, email_password, password):
         time.sleep(random.uniform(1, 3))
 
         email_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, 'login')))
-        email_input.send_keys(email_address)
-
+        for char in email_address:
+            email_input.send_keys(char)
+            time.sleep(random.uniform(0.1, 0.3))
         time.sleep(random.uniform(1, 2))
 
         password_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, 'password')))
-        password_input.send_keys(password)
-
+        for char in password:
+            password_input.send_keys(char)
+            time.sleep(random.uniform(0.1, 0.3))
         time.sleep(random.uniform(1, 2))
 
         driver.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.w-100').click()
@@ -162,13 +177,15 @@ def login_to_dofus(email_address, email_password, password):
             time.sleep(random.uniform(1, 3))
 
             email_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, 'login')))
-            email_input.send_keys(email_address)
-
+            for char in email_address:
+                email_input.send_keys(char)
+                time.sleep(random.uniform(0.1, 0.3))
             time.sleep(random.uniform(1, 2))
 
             password_input = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.NAME, 'password')))
-            password_input.send_keys(password)
-
+            for char in password:
+                password_input.send_keys(char)
+                time.sleep(random.uniform(0.1, 0.3))
             time.sleep(random.uniform(1, 2))
 
             driver.find_element(By.CSS_SELECTOR, 'button.btn.btn-lg.btn-primary.w-100').click()
@@ -204,7 +221,10 @@ def login_to_dofus(email_address, email_password, password):
                 return True, "Security code not found."
             time.sleep(random.uniform(1, 3))
             input_field.clear()
-            input_field.send_keys(sec_code)
+            for char in sec_code:
+                input_field.send_keys(char)
+                time.sleep(random.uniform(0.1, 0.3))
+            time.sleep(random.uniform(1, 2))
             confirm_button = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, 'input.btn.btn-primary.btn-lg'))
             )
@@ -231,7 +251,10 @@ def login_to_dofus(email_address, email_password, password):
             time.sleep(random.uniform(1, 3))
             input_field = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.ID, 'security_security')))
             input_field.clear()
-            input_field.send_keys(sec_code)
+            for char in sec_code:
+                input_field.send_keys(char)
+                time.sleep(random.uniform(0.1, 0.3))
+            time.sleep(random.uniform(1, 2))
             confirm_button = WebDriverWait(driver, 10).until(
                 EC.element_to_be_clickable((By.CSS_SELECTOR, "input[type='submit'][value='Confirm']"))
             )        
