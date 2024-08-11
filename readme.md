@@ -15,7 +15,7 @@ This bot automates the process of creating and setting up Dofus Touch accounts. 
     git clone https://github.com/mohdtalal3/Dofus-Touch-Account-Creation-Bot.git
     ```
     ```bash
-    cd dofus-touch-account-bot
+    cd Dofus-Touch-Account-Creation-Bot
     ```
 2. Create a virtual environment (optional but recommended):
     ```bash
