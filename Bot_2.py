@@ -20,10 +20,10 @@ user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"]
 def extract_sec_code(email_address, email_password):
     options = webdriver.ChromeOptions()
-    random_user_agent = random.choice(user_agents)
-    options.add_argument(f'user-agent={random_user_agent}')
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
+    # random_user_agent = random.choice(user_agents)
+    # options.add_argument(f'user-agent={random_user_agent}')
+    # options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    # options.add_experimental_option('useAutomationExtension', False)
     driver = webdriver.Chrome(options=options)
     driver.maximize_window()
     try:
@@ -385,7 +385,7 @@ def start(community_url, names_file='GAME_NAMES.txt'):
                         verified_file.write(f"{email_address}:{email_password}\n")
                     # Save successful account to success.txt
                     with open('success.txt', 'a') as success_file:
-                        success_file.write(f"{email_address}:{email_password}\n")
+                        success_file.write(f"{email_address}:{password}\n")
                     print(f"Account {email_address} has been successfully processed and saved to success.txt")
                 # Remove from outlook_accounts.txt
                 lines.remove(line)
