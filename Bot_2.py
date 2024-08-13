@@ -164,7 +164,7 @@ def login_to_dofus(email_address, email_password, password):
         time.sleep(random.uniform(2, 4))
 
         try:
-            button = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.XPATH, "//a[@class='login' and starts-with(@href, 'https://account.ankama.com/webauth/authorize?') and .//span[text()='Sign in']]")))
+            button = WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".ak-idbar-right .ak-nav-not-logged a[href*='account.ankama.com/webauth/authorize']")))
             button.click()
 
             time.sleep(random.uniform(2, 4))
@@ -242,7 +242,7 @@ def login_to_dofus(email_address, email_password, password):
 
             time.sleep(random.uniform(2, 4))
 
-            link_element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a.btn.btn-primary.btn-sm[href='/en/security/ankama-shield/deactivate']")))
+            link_element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a.btn.btn-primary.btn-sm")))
             link_element.click()
 
             sec_code = extract_sec_code(email_address, email_password)
@@ -256,13 +256,13 @@ def login_to_dofus(email_address, email_password, password):
                 time.sleep(random.uniform(0.1, 0.3))
             time.sleep(random.uniform(1, 2))
             confirm_button = WebDriverWait(driver, 10).until(
-                EC.element_to_be_clickable((By.CSS_SELECTOR, "input[type='submit'][value='Confirm']"))
+                EC.element_to_be_clickable((By.CSS_SELECTOR, "input.btn.btn-primary.btn-lg[type='submit']"))
             )        
             confirm_button.click()
 
             time.sleep(random.uniform(2, 4))
 
-            link_element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a.btn.btn-sm.btn-primary.ak-btn-home[href='/en/security']")))
+            link_element = WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, "a.btn.btn-sm.btn-primary.ak-btn-home")))
             link_element.click()
             time.sleep(random.uniform(3, 5))
         except:
@@ -365,12 +365,13 @@ def start(community_url, names_file='GAME_NAMES.txt'):
     for line in copied_lines:
         email_address, email_password = line.strip().split(':')
         account_created, password = create_dofus_account(email_address, email_password, names, community_url)
-
+        #email_address, email_password, password="mohdfaizan21052@outlook.com","Lebron06*james","mohdfaizan21052qAryX"
         if not account_created:
             print("Dofus account not created, removing email from txt file")
             lines.remove(line)
         else:
             print("Dofus Account Created")
+            #logged_in, reason = login_to_dofus(email_address, email_password, password)
             logged_in, reason = login_to_dofus(email_address, email_password, password)
             if not logged_in:
                 print("Dofus account not logging in, removing email from txt file")
