@@ -15,6 +15,19 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException, NoSuchElementException
 from selenium.webdriver.chrome.options import Options
 from fake_useragent import UserAgent
+def generate_password(length=16):
+    lower = random.choice(string.ascii_lowercase)
+    upper = random.choice(string.ascii_uppercase)
+    digit = random.choice(string.digits)
+    
+    all_chars = string.ascii_letters + string.digits
+    rest = ''.join(random.choice(all_chars) for _ in range(length - 3))
+    
+    password = lower + upper + digit + rest
+    password_list = list(password)
+    random.shuffle(password_list)
+    return ''.join(password_list)
+
 user_agents = [
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"]
@@ -309,7 +322,7 @@ def create_dofus_account(email_address, email_password, names, signup_url):
     birth_day = random.randint(1, 28)
     birth_month = random.randint(1, 12)
     birth_year = random.randint(1990, 2007)
-    password = email_address.split('@')[0] + ''.join(random.choices(string.ascii_letters + string.digits, k=5))
+    password = generate_password()
 
     form_fields = [
         ('firstname', first_name),
